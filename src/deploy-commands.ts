@@ -1,4 +1,4 @@
-import { REST, Routes } from "discord.js";
+import { REST, RouteLike, Routes } from "discord.js";
 import { commands } from "./commands";
 import { config } from "./config";
 
@@ -11,13 +11,37 @@ type DeployCommandsProps = {
 };
 
 export async function deployCommands({ guildId }: DeployCommandsProps) {
-  try {
-    console.log("Started refreshing application (/) commands.");
+  deployCommandsHelper(Routes.applicationCommands(
+    Routes.applicationGuildCommands(config.DISCORD_CLIENT_ID, guildId)))
+}
 
+export async function deployCommandsGlobally() {
+  deployCommandsHelper(Routes.applicationCommands(config.DISCORD_CLIENT_ID))
+}
+
+async function deployCommandsHelper(route: RouteLike) {
+  try {
+    console.log(`Started refreshing application (/) commands. - ${route}`);
+    console.log(commandsData)
+    await rest.put(
+      route,
+      {
+        body: commandsData,
+      }
+    );
+
+    console.log("Successfully reloaded application (/) commands.");
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+export async function removeCommandsHelper({ guildId }: DeployCommandsProps) {
+  try {
     await rest.put(
       Routes.applicationGuildCommands(config.DISCORD_CLIENT_ID, guildId),
       {
-        body: commandsData,
+        body: [],
       }
     );
 

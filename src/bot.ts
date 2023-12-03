@@ -2,16 +2,18 @@ import { Client } from "discord.js";
 import { commands } from "./commands";
 import { config } from "./config";
 import { createJobScheduler } from "./cron-scheduler";
-import { deployCommands } from "./deploy-commands";
+import { deployCommands, deployCommandsGlobally } from "./deploy-commands";
 import { fixTwitterUrls, parseTwitterUrls } from "./utils";
+
+const DRAIN_GANG_GUILD = '721491751440875520'
+const TEST_GUILD = '707437104275128362'
 
 const client = new Client({
   intents: ["Guilds", "GuildMessages", "DirectMessages", "MessageContent"],
 });
 
 client.once("ready", async () => {
-  // await deployCommands({guildId: '707437104275128362'})
-
+  await deployCommandsGlobally()
   console.log("Discord bot is ready! 🤖");
 });
 
