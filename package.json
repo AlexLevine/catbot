@@ -4,8 +4,9 @@
   "description": "Discord Bot for Heathcliff Content",
   "main": "index.js",
   "scripts": {
-    "start": "ts-node index.ts",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "tsx watch src/bot.ts",
+    "start": "node dist/bot.js",
+    "build": "tsup src/bot.ts --minify"
   },
   "repository": {
     "type": "git",
@@ -19,6 +20,8 @@
   "homepage": "https://github.com/AlexLevine/heathcliff-ts-discord-bot#readme",
   "devDependencies": {
     "ts-node": "^10.9.1",
+    "tsup": "^8.0.1",
+    "tsx": "^4.6.2",
     "typescript": "^5.3.2"
   },
   "dependencies": {
