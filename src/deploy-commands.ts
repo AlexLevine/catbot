@@ -1,52 +1,51 @@
-import { REST, RouteLike, Routes } from "discord.js";
-import { commands } from "./commands";
-import { config } from "./config";
+import { REST, Routes, type RouteLike } from 'discord.js'
+import { commands } from './commands'
+import { config } from './config'
 
-const commandsData = Object.values(commands).map((command) => command.data);
+const commandsData = Object.values(commands).map((command) => command.data)
 
-const rest = new REST({ version: "10" }).setToken(config.DISCORD_TOKEN);
+const rest = new REST({ version: '10' }).setToken(config.DISCORD_TOKEN)
 
-type DeployCommandsProps = {
-  guildId: string;
-};
-
-export async function deployCommands({ guildId }: DeployCommandsProps) {
-  deployCommandsHelper(Routes.applicationCommands(
-    Routes.applicationGuildCommands(config.DISCORD_CLIENT_ID, guildId)))
+interface DeployCommandsProps {
+  guildId: string
 }
 
-export async function deployCommandsGlobally() {
-  deployCommandsHelper(Routes.applicationCommands(config.DISCORD_CLIENT_ID))
+export const deployCommands = async ({ guildId }: DeployCommandsProps): Promise<void> => {
+  await deployCommandsHelper(Routes.applicationGuildCommands(config.DISCORD_CLIENT_ID, guildId))
 }
 
-async function deployCommandsHelper(route: RouteLike) {
+export const deployCommandsGlobally = async (): Promise<void> => {
+  await deployCommandsHelper(Routes.applicationCommands(config.DISCORD_CLIENT_ID))
+}
+
+const deployCommandsHelper = async (route: RouteLike): Promise<void> => {
   try {
-    console.log(`Started refreshing application (/) commands. - ${route}`);
+    console.log(`Started refreshing application (/) commands. - ${route}`)
     console.log(commandsData)
     await rest.put(
       route,
       {
-        body: commandsData,
+        body: commandsData
       }
-    );
+    )
 
-    console.log("Successfully reloaded application (/) commands.");
+    console.log('Successfully reloaded application (/) commands.')
   } catch (error) {
-    console.error(error);
+    console.error(error)
   }
 }
 
-export async function removeCommandsHelper({ guildId }: DeployCommandsProps) {
+export const removeCommandsHelper = async ({ guildId }: DeployCommandsProps): Promise<void> => {
   try {
     await rest.put(
       Routes.applicationGuildCommands(config.DISCORD_CLIENT_ID, guildId),
       {
-        body: [],
+        body: []
       }
-    );
+    )
 
-    console.log("Successfully reloaded application (/) commands.");
+    console.log('Successfully reloaded application (/) commands.')
   } catch (error) {
-    console.error(error);
+    console.error(error)
   }
 }

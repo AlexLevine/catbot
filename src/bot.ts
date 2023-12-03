@@ -1,44 +1,45 @@
-import { Client } from "discord.js";
-import { commands } from "./commands";
-import { config } from "./config";
-import { createJobScheduler } from "./cron-scheduler";
-import { deployCommands, deployCommandsGlobally } from "./deploy-commands";
-import { fixTwitterUrls, parseTwitterUrls } from "./utils";
+import { Client } from 'discord.js'
+import { commands } from './commands'
+import { config } from './config'
+import { createJobScheduler } from './cron-scheduler'
+import { deployCommands, deployCommandsGlobally } from './deploy-commands'
+import { fixTwitterUrls, parseTwitterUrls } from './utils'
 
-const DRAIN_GANG_GUILD = '721491751440875520'
-const TEST_GUILD = '707437104275128362'
+// const DRAIN_GANG_GUILD = '721491751440875520'
+// const TEST_GUILD = '707437104275128362'
 
 const client = new Client({
-  intents: ["Guilds", "GuildMessages", "DirectMessages", "MessageContent"],
-});
+  intents: ['Guilds', 'GuildMessages', 'DirectMessages', 'MessageContent']
+})
 
-client.once("ready", async () => {
+client.once('ready', async () => {
   await deployCommandsGlobally()
-  console.log("Discord bot is ready! 🤖");
-});
+  console.log('Discord bot is ready! 🤖')
+})
 
-client.on("guildCreate", async (guild) => {
-  await deployCommands({ guildId: guild.id });
-});
+client.on('guildCreate', async (guild) => {
+  await deployCommands({ guildId: guild.id })
+})
 
-client.on("interactionCreate", async (interaction) => {
+client.on('interactionCreate', async (interaction) => {
   if (!interaction.isCommand()) {
-    return;
+    return
   }
-  const { commandName } = interaction;
-  if (commands[commandName as keyof typeof commands]) {
-    commands[commandName as keyof typeof commands].execute(interaction);
-  }
-});
+  const { commandName } = interaction
+  await commands[commandName as keyof typeof commands].execute(interaction)
+})
 
-client.on("messageCreate", message => {
+client.on('messageCreate', async (message) => {
   const foundTwitterUrls = parseTwitterUrls(message.content)
 
-  if (foundTwitterUrls.length) {
+  if (foundTwitterUrls.length > 0) {
     const fixedTwitterUrls = fixTwitterUrls(foundTwitterUrls)
-    message.channel.send(fixedTwitterUrls.join(' , '))
+    await message.channel.send(fixedTwitterUrls.join(' , '))
   }
 })
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const cronSchedule = createJobScheduler(client)
+
+// eslint-disable-next-line @typescript-eslint/no-floating-promises
 client.login(config.DISCORD_TOKEN)
