@@ -3,9 +3,10 @@ import { commands } from "./commands";
 import { config } from "./config";
 import { createJobScheduler } from "./cron-scheduler";
 import { deployCommands } from "./deploy-commands";
+import { fixTwitterUrls, parseTwitterUrls } from "./utils";
 
 const client = new Client({
-  intents: ["Guilds", "GuildMessages", "DirectMessages"],
+  intents: ["Guilds", "GuildMessages", "DirectMessages", "MessageContent"],
 });
 
 client.once("ready", async () => {
@@ -19,7 +20,6 @@ client.on("guildCreate", async (guild) => {
 });
 
 client.on("interactionCreate", async (interaction) => {
-
   if (!interaction.isCommand()) {
     return;
   }
@@ -28,6 +28,15 @@ client.on("interactionCreate", async (interaction) => {
     commands[commandName as keyof typeof commands].execute(interaction);
   }
 });
+
+client.on("messageCreate", message => {
+  const foundTwitterUrls = parseTwitterUrls(message.content)
+
+  if (foundTwitterUrls.length) {
+    const fixedTwitterUrls = fixTwitterUrls(foundTwitterUrls)
+    message.channel.send(fixedTwitterUrls.join(' , '))
+  }
+})
 
 const cronSchedule = createJobScheduler(client)
 client.login(config.DISCORD_TOKEN)

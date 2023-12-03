@@ -52,3 +52,33 @@ export const removeFromSchedule = async (channelId: string) => {
         }
     }
 }
+
+const TWITTER_DOMAIN = 'https://twitter.com'
+const X_DOMAIN = 'https://x.com'
+const VX_TWITTER_DOMAIN = 'https://vxtwitter.com'
+
+export const parseTwitterUrls = (messageBody: string) => {
+    const words = messageBody.split(/(\s+)/);
+
+    const matches: string[] = []
+    words.forEach((word) => {
+        if (word.startsWith(X_DOMAIN) || word.startsWith(TWITTER_DOMAIN)) {
+            matches.push(word)
+        }
+    })
+
+    console.log(`Matches Found: ${matches}`)
+
+    return matches
+}
+
+export const fixTwitterUrls = (originalUrls: string[]) => {
+    return originalUrls.map((url) => {
+        if (url.startsWith(X_DOMAIN)) {
+            return url.replace(X_DOMAIN, VX_TWITTER_DOMAIN)
+        }
+        if (url.startsWith(TWITTER_DOMAIN)) {
+            return url.replace(TWITTER_DOMAIN, VX_TWITTER_DOMAIN)
+        }
+    })
+}
