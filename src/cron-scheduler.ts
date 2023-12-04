@@ -1,6 +1,6 @@
 import { CronJob } from 'cron'
 import { type Client, type TextChannel } from 'discord.js'
-import { formatHeathUrlFromDate, readChannelScheduleDb } from './utils'
+import { formatHeathUrlFromDate, readChannelScheduleDb } from './utils/channel-db-utils'
 
 export const sendToScheduledChannels = async (client: Client): Promise<void> => {
   const channelScheduleDb = readChannelScheduleDb()

@@ -1,5 +1,5 @@
 import { SlashCommandBuilder, type CommandInteraction } from 'discord.js'
-import { addToSchedule } from '../utils'
+import { addToSchedule } from '../utils/channel-db-utils'
 
 export const data = new SlashCommandBuilder()
   .setName('schedule-daily')

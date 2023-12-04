@@ -1,5 +1,5 @@
 import { SlashCommandBuilder, type CommandInteraction } from 'discord.js'
-import { formatHeathUrlFromDate } from '../utils'
+import { formatHeathUrlFromDate } from '../utils/heathcliff-format-utils'
 
 export const data = new SlashCommandBuilder()
   .setName('todays-heathcliff')

@@ -3,7 +3,7 @@ import { commands } from './commands'
 import { config } from './config'
 import { createJobScheduler } from './cron-scheduler'
 import { deployCommandsGlobally } from './deploy-commands'
-import { fixTwitterUrls, parseTwitterUrls } from './utils'
+import { fixTwitterUrls, parseTwitterUrls } from './utils/twitter-format-utils'
 
 // const DRAIN_GANG_GUILD = '721491751440875520'
 // const TEST_GUILD = '707437104275128362'

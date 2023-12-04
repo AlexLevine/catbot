@@ -1,5 +1,5 @@
 import { SlashCommandBuilder, type CommandInteraction } from 'discord.js'
-import { formatHeathUrl } from '../utils'
+import { formatHeathUrl } from '../utils/heathcliff-format-utils'
 
 export const data = new SlashCommandBuilder()
   .setName('random-heathcliff')

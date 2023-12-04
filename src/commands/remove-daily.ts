@@ -1,5 +1,5 @@
 import { SlashCommandBuilder, type CommandInteraction } from 'discord.js'
-import { removeFromSchedule } from '../utils'
+import { removeFromSchedule } from '../utils/channel-db-utils'
 
 export const data = new SlashCommandBuilder()
   .setName('remove-schedule-daily')

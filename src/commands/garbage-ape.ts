@@ -1,5 +1,5 @@
 import { SlashCommandBuilder, type CommandInteraction } from 'discord.js'
-import { formatHeathUrl } from '../utils'
+import { formatHeathUrl } from '../utils/heathcliff-format-utils'
 
 const KNOWN_GARBAGE_APES = [
   formatHeathUrl('23', '03', '2008'),
