@@ -2,7 +2,7 @@ import { Client } from 'discord.js'
 import { commands } from './commands'
 import { config } from './config'
 import { createJobScheduler } from './cron-scheduler'
-import { deployCommands, deployCommandsGlobally } from './deploy-commands'
+import { deployCommandsGlobally } from './deploy-commands'
 import { fixTwitterUrls, parseTwitterUrls } from './utils'
 
 // const DRAIN_GANG_GUILD = '721491751440875520'
@@ -15,10 +15,6 @@ const client = new Client({
 client.once('ready', async () => {
   await deployCommandsGlobally()
   console.log('Discord bot is ready! 🤖')
-})
-
-client.on('guildCreate', async (guild) => {
-  await deployCommands({ guildId: guild.id })
 })
 
 client.on('interactionCreate', async (interaction) => {
