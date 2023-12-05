@@ -14,4 +14,5 @@ Base input: `{"channels":[]}`
 ```
 DISCORD_TOKEN=""
 DISCORD_CLIENT_ID=""
+CHANNEL_DB_FILE_PATH="/tmp/channels.json"
 ```
