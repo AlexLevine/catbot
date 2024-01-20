@@ -1,3 +1,4 @@
+import consoleStamp from 'console-stamp'
 import { Client, Events, GatewayIntentBits, Partials } from 'discord.js'
 import { commands } from './commands'
 import { config } from './config'
@@ -7,6 +8,8 @@ import { fixEmbedUrls, isolateUrlsToFix } from './utils/fix-embed-utils'
 
 // const DRAIN_GANG_GUILD = '721491751440875520'
 // const TEST_GUILD = '707437104275128362'
+
+consoleStamp(console)
 
 const client = new Client({
   intents: [
