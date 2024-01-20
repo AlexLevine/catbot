@@ -2,7 +2,7 @@ const X_DOMAIN = 'x.com'
 const TWITTER_DOMAIN = 'twitter.com'
 const TIKTOK_DOMAIN = 'tiktok.com'
 
-const VX_TWITTER_DOMAIN = 'vxtwitter.com'
+export const VX_TWITTER_DOMAIN = 'vxtwitter.com'
 const VX_TIKTOK_DOMAIN = 'vxtiktok.com'
 
 const HTTPS_ONLY_PREFIX = 'https://'

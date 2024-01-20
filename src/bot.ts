@@ -1,4 +1,4 @@
-import { Client } from 'discord.js'
+import { Client, Events, GatewayIntentBits, Partials } from 'discord.js'
 import { commands } from './commands'
 import { config } from './config'
 import { createJobScheduler } from './cron-scheduler'
@@ -9,7 +9,19 @@ import { fixEmbedUrls, isolateUrlsToFix } from './utils/fix-embed-utils'
 // const TEST_GUILD = '707437104275128362'
 
 const client = new Client({
-  intents: ['Guilds', 'GuildMessages', 'DirectMessages', 'MessageContent']
+  intents: [
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildMessages,
+    GatewayIntentBits.GuildMessageReactions,
+    GatewayIntentBits.DirectMessages,
+    GatewayIntentBits.MessageContent
+  ],
+  partials: [
+    Partials.Message,
+    Partials.Channel,
+    Partials.Reaction,
+    Partials.User
+  ]
 })
 
 client.once('ready', async () => {
@@ -17,7 +29,7 @@ client.once('ready', async () => {
   console.log('Discord bot is ready! 🤖')
 })
 
-client.on('interactionCreate', async (interaction) => {
+client.on(Events.InteractionCreate, async (interaction) => {
   if (!interaction.isCommand()) {
     return
   }
@@ -25,11 +37,35 @@ client.on('interactionCreate', async (interaction) => {
   await commands[commandName as keyof typeof commands].execute(interaction)
 })
 
-client.on('messageCreate', async (message) => {
+client.on(Events.MessageCreate, async (message) => {
   const fixedUrls = fixEmbedUrls(isolateUrlsToFix(message.content))
 
   if (fixedUrls.length > 0) {
-    await message.channel.send(fixedUrls.join(' , '))
+    const botResponse = await message.channel.send(fixedUrls.join(' , '))
+    await botResponse.react('🗑️')
+  }
+})
+
+client.on(Events.MessageReactionAdd, async (reaction, user) => {
+  if (user.bot) return
+
+  // If the message isn't in the message cache, the author
+  // attribute will be null. So we'll just ignore those messages
+  if (reaction.message.author === null) {
+    return
+  }
+
+  if (client.user === null) {
+    return
+  }
+
+  // ignore reactions on messages that weren't originally sent by catboy.exe
+  if (reaction.message.author.id !== client.user.id) {
+    return
+  }
+
+  if (reaction.emoji.name === '🗑️') {
+    await reaction.message.delete()
   }
 })
 
