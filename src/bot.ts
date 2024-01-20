@@ -3,7 +3,7 @@ import { commands } from './commands'
 import { config } from './config'
 import { createJobScheduler } from './cron-scheduler'
 import { deployCommandsGlobally } from './deploy-commands'
-import { fixTwitterUrls, parseTwitterUrls } from './utils/twitter-format-utils'
+import { fixEmbedUrls, isolateUrlsToFix } from './utils/fix-embed-utils'
 
 // const DRAIN_GANG_GUILD = '721491751440875520'
 // const TEST_GUILD = '707437104275128362'
@@ -26,11 +26,10 @@ client.on('interactionCreate', async (interaction) => {
 })
 
 client.on('messageCreate', async (message) => {
-  const foundTwitterUrls = parseTwitterUrls(message.content)
+  const fixedUrls = fixEmbedUrls(isolateUrlsToFix(message.content))
 
-  if (foundTwitterUrls.length > 0) {
-    const fixedTwitterUrls = fixTwitterUrls(foundTwitterUrls)
-    await message.channel.send(fixedTwitterUrls.join(' , '))
+  if (fixedUrls.length > 0) {
+    await message.channel.send(fixedUrls.join(' , '))
   }
 })
 
