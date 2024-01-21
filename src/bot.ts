@@ -1,13 +1,13 @@
 import consoleStamp from 'console-stamp'
 import { Client, Events, GatewayIntentBits, Partials } from 'discord.js'
-import { commands } from './commands'
+import { allCommands } from './commands'
 import { config } from './config'
 import { createJobScheduler } from './cron-scheduler'
 import { deployCommandsGlobally } from './deploy-commands'
 import { fixEmbedUrls, isolateUrlsToFix } from './utils/fix-embed-utils'
 
 // const DRAIN_GANG_GUILD = '721491751440875520'
-// const TEST_GUILD = '707437104275128362'
+const TEST_GUILD = '707437104275128362'
 
 consoleStamp(console)
 
@@ -37,7 +37,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
     return
   }
   const { commandName } = interaction
-  await commands[commandName as keyof typeof commands].execute(interaction)
+  await allCommands[commandName as keyof typeof allCommands].execute(interaction)
 })
 
 client.on(Events.MessageCreate, async (message) => {
