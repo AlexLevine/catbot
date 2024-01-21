@@ -7,7 +7,7 @@ import { deployCommandsGlobally } from './deploy-commands'
 import { fixEmbedUrls, isolateUrlsToFix } from './utils/fix-embed-utils'
 
 // const DRAIN_GANG_GUILD = '721491751440875520'
-const TEST_GUILD = '707437104275128362'
+// const TEST_GUILD = '707437104275128362'
 
 consoleStamp(console)
 
