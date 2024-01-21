@@ -37,38 +37,43 @@ client.on(Events.InteractionCreate, async (interaction) => {
     return
   }
   const { commandName } = interaction
-  await allCommands[commandName as keyof typeof allCommands].execute(interaction)
+  try {
+    await allCommands[commandName as keyof typeof allCommands].execute(interaction)
+  } catch (err) {
+    console.error(err)
+  }
 })
 
 client.on(Events.MessageCreate, async (message) => {
   const fixedUrls = fixEmbedUrls(isolateUrlsToFix(message.content))
 
   if (fixedUrls.length > 0) {
-    const botResponse = await message.channel.send(fixedUrls.join(' , '))
-    await botResponse.react('🗑️')
+    try {
+      const botResponse = await message.channel.send(fixedUrls.join(' , '))
+      await botResponse.react('🗑️')
+    } catch (err) {
+      console.error(err)
+    }
   }
 })
 
 client.on(Events.MessageReactionAdd, async (reaction, user) => {
-  if (user.bot) return
-
+  if (user.bot) { return }
   // If the message isn't in the message cache, the author
   // attribute will be null. So we'll just ignore those messages
-  if (reaction.message.author === null) {
-    return
-  }
+  if (reaction.message.author === null) { return }
 
-  if (client.user === null) {
-    return
-  }
+  if (client.user === null) { return }
 
   // ignore reactions on messages that weren't originally sent by catboy.exe
-  if (reaction.message.author.id !== client.user.id) {
-    return
-  }
+  if (reaction.message.author.id !== client.user.id) { return }
 
   if (reaction.emoji.name === '🗑️') {
-    await reaction.message.delete()
+    try {
+      await reaction.message.delete()
+    } catch (err) {
+      console.error(err)
+    }
   }
 })
 
