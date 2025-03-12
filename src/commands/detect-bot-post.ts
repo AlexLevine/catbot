@@ -14,7 +14,7 @@ export async function execute(interaction: CommandInteraction): Promise<void> {
     if (percentage === 1) {
       await interaction.editReply(`${percentage}% likelihood of bot post. Your meat looks impeccable, ${100 - percentage} human`)
     } else if (percentage >= 99) {
-      await interaction.editReply(`${percentage}% likelihood of bot post. Your meat looks impeccable, ${100 - percentage} human`)
+      await interaction.editReply(`${percentage}% likelihood of bot post. Hello fellow machine 🤖`)
     } else if (percentage === 69) {
       await interaction.editReply(`${percentage}% likelihood of bot post... nice 😎`)
     } else {
