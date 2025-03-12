@@ -1,4 +1,5 @@
 import * as addScheduledHeath from './add-daily'
+import * as detectBotPost from './detect-bot-post'
 import * as garbageApe from './garbage-ape'
 import * as getLineStickerpack from './get-line-stickerpack'
 import * as ping from './ping'
@@ -14,7 +15,8 @@ export const commands = {
   'schedule-daily': addScheduledHeath,
   'remove-schedule-daily': removeScheduledHeath,
   'get-line-stickerpack': getLineStickerpack,
-  'trainer-quote': trainerQuote
+  'trainer-quote': trainerQuote,
+  'detect-bot-post': detectBotPost
 }
 
 export const testCommands = {
